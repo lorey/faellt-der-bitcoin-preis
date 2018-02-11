@@ -28,6 +28,9 @@
     Der aktuelle Preis ist <span id="price"></span>€.<br>
     Der Preis ist also um <span id="pricedeltapercentage">0</span>% bzw. <span id="pricedelta"></span>€ <span id="pricedeltaword">gefallen</span>.
 </p>
+<p>
+    Hättest du beim Laden der Seite 1000€ in Bitcoin gewechselt, hättest du jetzt <span id="investmentnow">1000€</span>.
+</p>
 <h3>Der Bitcoin-Preis in den letzten 24h</h3>
 <img src="https://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase">
 
@@ -38,6 +41,7 @@
     var priceDeltaTag = document.querySelector("#pricedelta");
     var priceDeltaPercentageTag = document.querySelector("#pricedeltapercentage");
     var priceDeltaWordTag = document.querySelector("#pricedeltaword");
+    var investmentNowTag = document.querySelector('#investmentnow');
 
     var priceStart = null;
     var priceCurrent = null;
@@ -52,13 +56,17 @@
         }
 
         priceCurrent = rate;
-        priceCurrentTag.innerHTML = Math.round(priceCurrent);
 
         var priceDelta = priceCurrent - priceStart;
-        priceDeltaTag.innerHTML = Math.round(Math.abs(priceDelta));
+        var deltaRatio = priceCurrent / priceStart;
+        var investmentNow = 1000 * deltaRatio;
 
-        var deltaRatio = (1 - priceCurrent / priceStart);
-        deltaPercentage = Math.abs(100 * deltaRatio);
+        priceCurrentTag.innerHTML = Math.round(priceCurrent);
+        priceDeltaTag.innerHTML = Math.round(Math.abs(priceDelta));
+        investmentNowTag.innerHTML = Math.round(investmentNow) + '€';
+
+        var deltaRatioReadable = (1 - deltaRatio);
+        deltaPercentage = Math.abs(100 * deltaRatioReadable);
         priceDeltaPercentageTag.innerHTML = "" + Math.round(100 * deltaPercentage) / 100;
 
         if (priceCurrent < priceStart) {
