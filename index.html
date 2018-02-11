@@ -26,7 +26,7 @@
 <p>
     Als du diese Seite geladen hast war der Preis <span id="startingprice"></span>€.<br>
     Der aktuelle Preis ist <span id="price"></span>€.<br>
-    Der Preis also um <span id="pricedelta"></span>€ <span id="pricedeltaword">gestiegen</span>.
+    Der Preis also um <span id="pricedelta"></span>€ bzw. <span id="pricedeltapercentage">0</span>% <span id="pricedeltaword">gestiegen</span>.
 </p>
 <h3>Der Bitcoin-Preis in den letzten 24h</h3>
 <img src="http://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase">
@@ -36,10 +36,12 @@
     var priceStartTag = document.querySelector("#startingprice");
     var headingTag = document.querySelector("h2");
     var priceDeltaTag = document.querySelector("#pricedelta");
+    var priceDeltaPercentageTag = document.querySelector("#pricedeltapercentage");
     var priceDeltaWordTag = document.querySelector("#pricedeltaword");
 
     var priceStart = null;
     var priceCurrent = null;
+    var deltaPercentage = null;
 
     function fillPrice(data) {
         var rate = data.bpi.EUR.rate_float;
@@ -55,18 +57,22 @@
         var priceDelta = priceCurrent - priceStart;
         priceDeltaTag.innerHTML = Math.round(Math.abs(priceDelta));
 
+        var deltaRatio = (1 - priceCurrent / priceStart);
+        deltaPercentage = Math.abs(100 * deltaRatio);
+        priceDeltaPercentageTag.innerHTML = "" + Math.round(100 * deltaPercentage) / 100;
+
         if (priceCurrent < priceStart) {
             // heißßß
             headingTag.innerHTML = "Ja, der Bitcoin-Preis fällt gerade";
             document.body.style.backgroundColor = '#C92E12';
             priceDeltaWordTag.innerHTML = 'gefallen';
-            document.title = '⬇ Bitcoin️ fällt'
+            document.title = '⬇ Bitcoin️ fällt';
         } else if(priceCurrent > priceStart) {
             // kaltttt
             headingTag.innerHTML = "Nein, der Bitcoin-Preis fällt gerade nicht";
             document.body.style.backgroundColor = '#829A60';
             priceDeltaWordTag.innerHTML = 'gestiegen';
-            document.title = '️⬆ Bitcoin steigt️'
+            document.title = '️⬆ Bitcoin steigt️';
         }
     }
 
