@@ -18,7 +18,7 @@
     </style>
 
     <!-- jQuery -->
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>Fällt der Bitcoin-Preis gerade?</h1>
@@ -29,7 +29,7 @@
     Der Preis ist also um <span id="pricedeltapercentage">0</span>% bzw. <span id="pricedelta"></span>€ <span id="pricedeltaword">gefallen</span>.
 </p>
 <h3>Der Bitcoin-Preis in den letzten 24h</h3>
-<img src="http://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase">
+<img src="https://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase">
 
 <script>
     var priceCurrentTag = document.querySelector("#price");
@@ -91,7 +91,7 @@
 
     setInterval(function () {
         // reload image regularly: https://stackoverflow.com/a/1077051
-        document.querySelector('img').src = 'http://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase&' + new Date().getTime();
+        document.querySelector('img').src = 'https://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase&' + new Date().getTime();
     }, 60000);
 </script>
 
