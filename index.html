@@ -37,40 +37,35 @@
 
     var refreshPrice = function(){
         //make the request
-        var XHR = new XMLHttpRequest();
+        fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(function (data) {
+            return data.json();
+        })
+        .then(function (data) {
+            var rate = data.bpi.EUR.rate_float;
 
-        XHR.onreadystatechange = function(){
-            if(XHR.readyState === 4 && XHR.status === 200) {
-                var data = JSON.parse(XHR.responseText);
-                var rate = data.bpi.EUR.rate_float;
-
-                if (priceStart === null) {
-                    priceStart = rate;
-                    priceStartTag.innerHTML = Math.round(priceStart);
-                }
-
-                priceCurrent = rate;
-                priceCurrentTag.innerHTML = Math.round(priceCurrent);
-
-                var priceDelta = priceCurrent - priceStart;
-                priceDeltaTag.innerHTML = Math.round(Math.abs(priceDelta));
-
-                if (priceCurrent < priceStart) {
-                    // heißßß
-                    headingTag.innerHTML = "Ja, der Bitcoin-Preis fällt gerade";
-                    document.body.style.backgroundColor = '#C92E12';
-                    priceDeltaWordTag.innerHTML = 'gefallen';
-                } else if(priceCurrent > priceStart) {
-                    // kaltttt
-                    headingTag.innerHTML = "Nein, der Bitcoin-Preis fällt gerade nicht";
-                    document.body.style.backgroundColor = '#829A60';
-                    priceDeltaWordTag.innerHTML = 'gestiegen';
-                }
+            if (priceStart === null) {
+                priceStart = rate;
+                priceStartTag.innerHTML = Math.round(priceStart);
             }
-        };
 
-        XHR.open("GET","https://api.coindesk.com/v1/bpi/currentprice.json");
-        XHR.send();
+            priceCurrent = rate;
+            priceCurrentTag.innerHTML = Math.round(priceCurrent);
+
+            var priceDelta = priceCurrent - priceStart;
+            priceDeltaTag.innerHTML = Math.round(Math.abs(priceDelta));
+
+            if (priceCurrent < priceStart) {
+                // heißßß
+                headingTag.innerHTML = "Ja, der Bitcoin-Preis fällt gerade";
+                document.body.style.backgroundColor = '#C92E12';
+                priceDeltaWordTag.innerHTML = 'gefallen';
+            } else if(priceCurrent > priceStart) {
+                // kaltttt
+                headingTag.innerHTML = "Nein, der Bitcoin-Preis fällt gerade nicht";
+                document.body.style.backgroundColor = '#829A60';
+                priceDeltaWordTag.innerHTML = 'gestiegen';
+            }
+        });
     };
 
     refreshPrice();
