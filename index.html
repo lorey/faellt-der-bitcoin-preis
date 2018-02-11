@@ -37,7 +37,8 @@
 
     var refreshPrice = function(){
         //make the request
-        fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(function (data) {
+        fetch("https://api.coindesk.com/v1/bpi/currentprice.json")
+        .then(function (data) {
             return data.json();
         })
         .then(function (data) {
