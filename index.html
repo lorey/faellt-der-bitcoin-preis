@@ -3,22 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Fällt der Bitcoin-Preis gerade?</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!-- miligram -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="https://cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+
     <style>
         body {
-            color: white;
-            background-color: #777;
-            font-family: sans-serif;
+            color: #eee;
+            background-color: #555;
             text-align: center;
             margin-top: 100px;
+        }
+
+        body.price-decreasing {
+            color: #FFEEEE;
+            background-color: #C92E12;
+        }
+
+        body.price-increasing {
+            color: #EEFFEE;
+            background-color: #829A60;
         }
 
         h3 {
             margin-top: 100px;
         }
     </style>
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 </head>
 <body>
 <h1>Fällt der Bitcoin-Preis gerade?</h1>
@@ -35,11 +50,11 @@
 <img src="https://bitcoinity.org/markets/image?span=24h&size=medium&currency=EUR&exchange=coinbase">
 
 <h3>Feedback/Verbesserungen</h3>
-<p style="font-size: 75%">
+<p><small>
     Dieses Projekt ist auf GitHub unter <a href="https://github.com/lorey/faellt-der-bitcoin-preis" target="_blank">lorey/faellt-der-bitcoin-preis</a>.<br>
     <a href="https://twitter.com/karllorey" target="_blank">Karl Lorey</a> ist auf Twitter.<br>
     Mit Liebe in der <a href="http://startup-karlsruhe.de" target="_blank">Startup-Stadt Karlsruhe</a> gemacht.
-</p>
+</small></p>
 
 <script>
     var priceCurrentTag = document.querySelector("#price");
@@ -53,6 +68,24 @@
     var priceStart = null;
     var priceCurrent = null;
     var deltaPercentage = null;
+
+    function setStatusFalling() {
+        headingTag.innerHTML = "Nein, der Bitcoin-Preis fällt gerade nicht";
+        priceDeltaWordTag.innerHTML = 'gestiegen';
+        document.title = '️⬆ Bitcoin steigt️';
+
+        document.body.classList.remove('price-decreasing');
+        document.body.classList.add('price-increasing');
+    }
+
+    function setStatusIncreasing() {
+        headingTag.innerHTML = "Ja, der Bitcoin-Preis fällt gerade";
+        priceDeltaWordTag.innerHTML = 'gefallen';
+        document.title = '⬇ Bitcoin️ fällt';
+
+        document.body.classList.add('price-decreasing');
+        document.body.classList.remove('price-increasing');
+    }
 
     function fillPrice(data) {
         var rate = data.bpi.EUR.rate_float;
@@ -77,17 +110,11 @@
         priceDeltaPercentageTag.innerHTML = "" + Math.round(100 * deltaPercentage) / 100;
 
         if (priceCurrent < priceStart) {
-            // heißßß
-            headingTag.innerHTML = "Ja, der Bitcoin-Preis fällt gerade";
-            document.body.style.backgroundColor = '#C92E12';
-            priceDeltaWordTag.innerHTML = 'gefallen';
-            document.title = '⬇ Bitcoin️ fällt';
+            setStatusIncreasing();
         } else if(priceCurrent > priceStart) {
-            // kaltttt
-            headingTag.innerHTML = "Nein, der Bitcoin-Preis fällt gerade nicht";
-            document.body.style.backgroundColor = '#829A60';
-            priceDeltaWordTag.innerHTML = 'gestiegen';
-            document.title = '️⬆ Bitcoin steigt️';
+            setStatusFalling();
+        } else {
+            // status is constant, do nothing
         }
     }
 
